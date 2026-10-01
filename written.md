@@ -182,7 +182,11 @@ import copy
 c = copy.deepcopy(a)
 ```
 
-（在此作答）
+```aiignore
+   b是a的浅拷贝，c是a的深拷贝。执行a[0].append(99)后，b变为[[1, 2, 99], [3, 4]]，c仍然是[[1, 2], [3, 4]]。
+   因为浅拷贝只是复制了外层到新的列表，但是内层的索引还是在原来的列表。
+   而深拷贝会全部复制所有内容到新的列表。
+```
 
 ### 第 2 题：字典与列表的综合应用
 
@@ -202,7 +206,18 @@ logs = [
 2. 写出表达式，统计每个用户出现了几次（返回字典，键为用户名，值为次数）。
 3. 解释为什么第 2 问不能直接用 `len(logs)` 得到结果，需要什么遍历结构？
 
-（在此作答）
+```aiignore
+#1
+log_1=[i for i in logs if i["level"] == "ERROR"]
+#2
+result={}
+for log in logs:
+    user = log["user"]
+    result[user] = result.get(user, 0) + 1
+#3
+len(logs)是输出日志条数，应当循环遍历每个log。
+
+```
 
 ### 第 3 题：异常处理设计
 
@@ -217,4 +232,19 @@ Day_10 中你写过 `safe_int(s)` 函数：能转就返回整数，不能转就�
 
 请写出函数代码，并说明：为什么这里用 `try/except` 比先用 `if` 判断再计算更好？
 
-（在此作答）
+```aiignore
+   def safe_device(a,b):
+    try:
+        a=int(a)
+        b=int(b)
+        float=(a/b)
+        return float
+    except ValueError:
+        print("这不是数字！")
+        return None
+    except ZeroDivisionError:
+        print("除数不能为零！")
+        return None
+    
+#if判断要写类似正则表达式才能判断复杂的字符是不是数字，用try相当于把这一步省略了，更简洁。逻辑也更清晰。
+```
